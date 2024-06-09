@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "transactions")
-public class TransactionEntity {
+public class TransactionDO {
 
     @Getter
     @Id
@@ -59,9 +59,9 @@ public class TransactionEntity {
         this.amount = amount;
     }
 
-    public TransactionEntity() {}
+    public TransactionDO() {}
 
-    public TransactionEntity(Date date, String description, String category, double amount) {
+    public TransactionDO(Date date, String description, String category, double amount) {
         this.date = date;
         this.description = description;
         this.category = category;

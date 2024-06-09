@@ -1,6 +1,6 @@
 package com.example.budgetbackend.controller;
 
-import com.example.budgetbackend.entity.TransactionEntity;
+import com.example.budgetbackend.entity.TransactionDO;
 import com.example.budgetbackend.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,28 +12,32 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
-    @Autowired
-    private TransactionService transactionService;
+
+    private final TransactionService transactionService;
+
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
 
     @GetMapping
-    public List<TransactionEntity> getAllTransactions() {
+    public List<TransactionDO> getAllTransactions() {
         return transactionService.getAllTransactions();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransactionEntity> getTransactionById(@PathVariable Long id) {
-        Optional<TransactionEntity> transaction = transactionService.getTransactionById(id);
+    public ResponseEntity<TransactionDO> getTransactionById(@PathVariable Long id) {
+        Optional<TransactionDO> transaction = transactionService.getTransactionById(id);
         return transaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public TransactionEntity createTransaction(@RequestBody TransactionEntity transaction) {
+    public TransactionDO createTransaction(@RequestBody TransactionDO transaction) {
         return transactionService.saveTransaction(transaction);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TransactionEntity> updateTransaction(@PathVariable Long id, @RequestBody TransactionEntity transactionDetails) {
-        Optional<TransactionEntity> updatedTransaction = transactionService.updateTransaction(id, transactionDetails);
+    public ResponseEntity<TransactionDO> updateTransaction(@PathVariable Long id, @RequestBody TransactionDO transactionDetails) {
+        Optional<TransactionDO> updatedTransaction = transactionService.updateTransaction(id, transactionDetails);
         return updatedTransaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

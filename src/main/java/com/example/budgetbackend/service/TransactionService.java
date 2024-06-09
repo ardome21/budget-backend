@@ -1,6 +1,6 @@
 package com.example.budgetbackend.service;
 
-import com.example.budgetbackend.entity.TransactionEntity;
+import com.example.budgetbackend.entity.TransactionDO;
 import com.example.budgetbackend.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,22 +11,25 @@ import java.util.Optional;
 @Service
 public class TransactionService {
 
+    private final TransactionRepository transactionRepository;
     @Autowired
-    private TransactionRepository transactionRepository;
+    public TransactionService(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 
-    public List<TransactionEntity> getAllTransactions() {
+    public List<TransactionDO> getAllTransactions() {
         return transactionRepository.findAll();
     }
 
-    public Optional<TransactionEntity> getTransactionById(Long id) {
+    public Optional<TransactionDO> getTransactionById(Long id) {
         return transactionRepository.findById(id);
     }
 
-    public TransactionEntity saveTransaction(TransactionEntity transaction) {
+    public TransactionDO saveTransaction(TransactionDO transaction) {
         return transactionRepository.save(transaction);
     }
 
-    public Optional<TransactionEntity> updateTransaction(Long id, TransactionEntity transactionDetails) {
+    public Optional<TransactionDO> updateTransaction(Long id, TransactionDO transactionDetails) {
         return transactionRepository.findById(id).map(transaction -> {
             transaction.setDate(transactionDetails.getDate());
             transaction.setDescription(transactionDetails.getDescription());
