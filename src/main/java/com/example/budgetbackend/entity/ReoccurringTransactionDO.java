@@ -1,22 +1,23 @@
 package com.example.budgetbackend.entity;
 
 import jakarta.persistence.*;
+import lombok.Cleanup;
 import lombok.Getter;
-
-import java.util.Date;
 
 @Getter
 @Entity
-@Table(name = "transactions")
-public class TransactionDO {
+@Table(name = "reoccurring_transactions")
+public class ReoccurringTransactionDO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    @Column(name = "frequency_value", nullable = false)
+    private String frequency_value;
+
+    @Column(name = "frequency_unit", nullable = false)
+    private String frequency_unit;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -27,8 +28,12 @@ public class TransactionDO {
     @Column(name = "amount", nullable = false)
     private double amount;
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setFrequencyValue(String frequency_value) {
+        this.frequency_value = frequency_value;
+    }
+
+    public void setFrequencyUnit(String frequency_unit) {
+        this.frequency_unit = frequency_unit;
     }
 
     public void setDescription(String description) {
@@ -43,15 +48,17 @@ public class TransactionDO {
         this.amount = amount;
     }
 
-    public TransactionDO() {}
+    public ReoccurringTransactionDO() {}
 
-    public TransactionDO(
-            Date date,
+    public ReoccurringTransactionDO(
+            String frequency_value,
+            String frequency_unit,
             String description,
             String category,
             double amount
-    ) {
-        this.date = date;
+    ){
+        this.frequency_value = frequency_value;
+        this.frequency_unit = frequency_unit;
         this.description = description;
         this.category = category;
         this.amount = amount;

@@ -1,41 +1,53 @@
 package com.example.budgetbackend.service;
 
 import com.example.budgetbackend.entity.TransactionDO;
+import com.example.budgetbackend.mapper.TransactionMapper;
+import com.example.budgetbackend.model.Transaction;
 import com.example.budgetbackend.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final TransactionMapper transactionMapper;
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
         this.transactionRepository = transactionRepository;
+        this.transactionMapper = transactionMapper;
     }
 
-    public List<TransactionDO> getAllTransactions() {
-        return transactionRepository.findAll();
+    public List<Transaction> getAllTransactions() {
+
+        return transactionRepository.findAll()
+                .stream()
+                .map(transactionMapper::toModel)
+                .collect(Collectors.toList());
     }
 
-    public Optional<TransactionDO> getTransactionById(Long id) {
-        return transactionRepository.findById(id);
+    public Optional<Transaction> getTransactionById(Long id) {
+        return transactionRepository.findById(id).map(transactionMapper::toModel);
     }
 
-    public TransactionDO saveTransaction(TransactionDO transaction) {
-        return transactionRepository.save(transaction);
+    public Transaction saveTransaction(Transaction transaction) {
+        TransactionDO entity = transactionMapper.toEntity(transaction);
+        TransactionDO savedEntity = transactionRepository.save(entity);
+        return transactionMapper.toModel(savedEntity);
     }
 
-    public Optional<TransactionDO> updateTransaction(Long id, TransactionDO transactionDetails) {
+    public Optional<Transaction> updateTransaction(Long id, TransactionDO transactionDetails) {
         return transactionRepository.findById(id).map(transaction -> {
             transaction.setDate(transactionDetails.getDate());
             transaction.setDescription(transactionDetails.getDescription());
             transaction.setCategory(transactionDetails.getCategory());
             transaction.setAmount(transactionDetails.getAmount());
-            return transactionRepository.save(transaction);
+            TransactionDO updatedTransaction = transactionRepository.save(transaction);
+            return transactionMapper.toModel(updatedTransaction);
         });
     }
 
