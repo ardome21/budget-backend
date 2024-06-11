@@ -16,7 +16,6 @@ import java.sql.SQLException;
 public class DatabaseConnectionChecker implements ApplicationRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(DatabaseConnectionChecker.class);
-
     private final DataSource dataSource;
 
     @Autowired

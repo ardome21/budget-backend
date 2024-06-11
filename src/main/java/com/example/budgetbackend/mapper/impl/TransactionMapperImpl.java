@@ -10,28 +10,33 @@ import org.springframework.stereotype.Component;
 public class TransactionMapperImpl implements TransactionMapper {
 
     @Override
-    public Transaction toModel(TransactionDO entity) {
-        if (entity == null) {
+    public Transaction toModel(TransactionDO transactionDO) {
+        if (transactionDO == null) {
             return null;
         }
-        Transaction model = new Transaction();
-        model.setId(entity.getId());
-        model.setDate(entity.getDate());
-        model.setTransactionItem(new TransactionItem(entity.getDescription(), entity.getCategory(), entity.getAmount()));
-        return model;
+        TransactionItem transactionItem = new TransactionItem();
+        transactionItem.setDescription(transactionDO.getDescription());
+        transactionItem.setCategory(transactionDO.getCategory());
+        transactionItem.setAmount(transactionDO.getAmount());
+
+        Transaction transaction = new Transaction(transactionDO.getId());
+        transaction.setDate(transactionDO.getDate());
+        transaction.setTransactionItem(transactionItem);
+        return transaction;
     }
 
     @Override
-    public TransactionDO toEntity(Transaction model) {
-        if (model == null) {
+    public TransactionDO toEntity(Transaction transaction) {
+        if (transaction == null) {
             return null;
         }
-        TransactionDO entity = new TransactionDO();
-
-        entity.setDate(model.getDate());
-        entity.setDescription(model.getTransactionItem().getDescription());
-        entity.setCategory(model.getTransactionItem().getCategory());
-        entity.setAmount(model.getTransactionItem().getAmount());
-        return entity;
+        TransactionDO transactionDO = new TransactionDO(transaction.getId());
+        transactionDO.setDate(transaction.getDate());
+        if (transaction.getTransactionItem() != null) {
+            transactionDO.setDescription(transaction.getTransactionItem().getDescription());
+            transactionDO.setCategory(transaction.getTransactionItem().getCategory());
+            transactionDO.setAmount(transaction.getTransactionItem().getAmount());
+        }
+        return transactionDO;
     }
 }

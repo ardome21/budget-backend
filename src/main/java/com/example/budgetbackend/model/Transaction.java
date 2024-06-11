@@ -5,15 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
-@Setter
 public class Transaction {
-    private Long id;
-    private Date date;
+
+    private final Long id;
+    @Setter
+    private LocalDate date;
+    @Setter
     private TransactionItem transactionItem;
+
+    public Transaction(Long id){
+        this.id = id;
+    }
 
 }

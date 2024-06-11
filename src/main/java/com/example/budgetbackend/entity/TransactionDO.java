@@ -1,10 +1,16 @@
 package com.example.budgetbackend.entity;
 
+import com.example.budgetbackend.model.Transaction;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
+@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "transactions")
@@ -14,46 +20,24 @@ public class TransactionDO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column(name = "date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    private LocalDate date;
 
+    @Setter
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Setter
     @Column(name = "category", nullable = false)
     private String category;
 
+    @Setter
     @Column(name = "amount", nullable = false)
     private double amount;
 
-    public void setDate(Date date) {
-        this.date = date;
+    public TransactionDO(Long id) {
+        this.id = id;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public TransactionDO() {}
-
-    public TransactionDO(
-            Date date,
-            String description,
-            String category,
-            double amount
-    ) {
-        this.date = date;
-        this.description = description;
-        this.category = category;
-        this.amount = amount;
-    }
 }

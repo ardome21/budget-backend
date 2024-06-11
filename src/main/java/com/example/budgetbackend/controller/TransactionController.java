@@ -36,7 +36,7 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transaction> updateTransactionDO(@PathVariable Long id, @RequestBody TransactionDO transactionDetails) {
+    public ResponseEntity<Transaction> updateTransactionDO(@PathVariable Long id, @RequestBody Transaction transactionDetails) {
         Optional<Transaction> updatedTransaction = transactionService.updateTransaction(id, transactionDetails);
         return updatedTransaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }

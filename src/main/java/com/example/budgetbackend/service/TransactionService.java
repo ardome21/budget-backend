@@ -23,7 +23,6 @@ public class TransactionService {
     }
 
     public List<Transaction> getAllTransactions() {
-
         return transactionRepository.findAll()
                 .stream()
                 .map(transactionMapper::toModel)
@@ -35,17 +34,17 @@ public class TransactionService {
     }
 
     public Transaction saveTransaction(Transaction transaction) {
-        TransactionDO entity = transactionMapper.toEntity(transaction);
-        TransactionDO savedEntity = transactionRepository.save(entity);
+        TransactionDO transactionDO = transactionMapper.toEntity(transaction);
+        TransactionDO savedEntity = transactionRepository.save(transactionDO);
         return transactionMapper.toModel(savedEntity);
     }
 
-    public Optional<Transaction> updateTransaction(Long id, TransactionDO transactionDetails) {
+    public Optional<Transaction> updateTransaction(Long id, Transaction transactionDetails) {
         return transactionRepository.findById(id).map(transaction -> {
             transaction.setDate(transactionDetails.getDate());
-            transaction.setDescription(transactionDetails.getDescription());
-            transaction.setCategory(transactionDetails.getCategory());
-            transaction.setAmount(transactionDetails.getAmount());
+            transaction.setDescription(transactionDetails.getTransactionItem().getDescription());
+            transaction.setCategory(transactionDetails.getTransactionItem().getCategory());
+            transaction.setAmount(transactionDetails.getTransactionItem().getAmount());
             TransactionDO updatedTransaction = transactionRepository.save(transaction);
             return transactionMapper.toModel(updatedTransaction);
         });

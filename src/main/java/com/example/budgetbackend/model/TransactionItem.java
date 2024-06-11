@@ -5,10 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
-@Getter
 @Setter
+@Getter
+
 public class TransactionItem {
     private String description;
     private String category;
