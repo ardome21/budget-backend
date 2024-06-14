@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    void testGetAllTransactions_returnTransactionList() throws Exception {
+    void testGetAllTransactions_shouldReturnTransactionList() throws Exception {
         when(transactionService.getAllTransactions()).thenReturn(mockTransactions);
         mockMvc.perform(get("/transactions"))
                 .andExpect(status().isOk())
@@ -51,7 +52,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    void getTransactionById_shouldReturnTransaction() throws Exception {
+    void testGetTransactionById_shouldReturnTransaction() throws Exception {
         when(transactionService.getTransactionById(mockTransaction.getId())).thenReturn(Optional.of(mockTransaction));
 
         mockMvc.perform(get("/transactions/{id}", mockTransaction.getId()))
@@ -61,7 +62,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    void getTransactionById_shouldReturnNotFound() throws Exception {
+    void testGetTransactionById_shouldReturnNotFound() throws Exception {
         when(transactionService.getTransactionById(anyLong())).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/transactions/{id}", 1L))
@@ -69,6 +70,65 @@ public class TransactionControllerTest {
 
         verify(transactionService, times(1)).getTransactionById(1L);
     }
+
+    @Test
+    void testCreateTransaction_shouldReturnTransaction() throws Exception {
+        when(transactionService.saveTransaction(any(Transaction.class))).thenReturn(mockTransaction);
+        String inputJsonString = asJsonString(mockTransaction);
+        mockMvc.perform(post("/transactions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(inputJsonString))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(mockTransaction.getId()));
+        verify(transactionService, times(1)).saveTransaction(any(Transaction.class));
+    }
+
+    @Test
+    void testUpdateTransaction_shouldReturnTransaction() throws Exception {
+        Long id = mockTransaction.getId();
+        when(transactionService.updateTransaction(eq(id),any(Transaction.class)))
+                .thenReturn(Optional.of(mockTransaction));
+        String inputJsonString = asJsonString(mockTransaction);
+        mockMvc.perform(put("/transactions/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(inputJsonString))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(mockTransaction.getId()));
+
+        verify(transactionService, times(1)).updateTransaction(eq(id),any(Transaction.class));
+    }
+
+    @Test
+    void testUpdateTransaction_shouldReturnNotFound() throws Exception {
+        Long id = 3L;
+        when(transactionService.updateTransaction(eq(id),any(Transaction.class)))
+                .thenReturn(Optional.empty());
+        String inputJsonString = asJsonString(mockTransaction);
+        mockMvc.perform(put("/transactions/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(inputJsonString))
+                        .andExpect(status().isNotFound());
+        verify(transactionService, times(1)).updateTransaction(eq(id),any(Transaction.class));
+    }
+
+    @Test
+    void testDeleteTransaction_shouldFindTransaction() throws Exception {
+        Long id = 1L;
+        when(transactionService.deleteTransaction(id)).thenReturn(true);
+        mockMvc.perform(delete("/transactions/{id}", id))
+                .andExpect(status().isNoContent());
+         verify(transactionService,times(1)).deleteTransaction(id);
+    }
+
+    @Test
+    void testDeleteTransaction_shouldNotFindTransaction() throws Exception {
+        Long id = 3L;
+        when(transactionService.deleteTransaction(id)).thenReturn(false);
+        mockMvc.perform(delete("/transactions/{id}", id))
+                .andExpect(status().isNotFound());
+        verify(transactionService,times(1)).deleteTransaction(id);
+    }
+
 
     private String asJsonString(final Object obj) {
         try {
