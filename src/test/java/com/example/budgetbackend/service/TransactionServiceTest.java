@@ -29,8 +29,6 @@ public class TransactionServiceTest {
     @InjectMocks
     private TransactionService transactionService;
 
-
-
     private List<Transaction> mockTransactions;
 
     private List<TransactionDO> mockTransactionDOs;
@@ -55,11 +53,11 @@ public class TransactionServiceTest {
 
     @Test
     void testTransactionById(){
-        when(transactionRepository.findById(any())).thenReturn(Optional.ofNullable(mockTransactionDOs.get(0)));
+        when(transactionRepository.findById(any())).thenReturn(Optional.of(mockTransactionDOs.get(0)));
         when(transactionMapper.toModel(any())).thenReturn(mockTransactions.get(0));
         Long id = mockTransactions.get(0).getId();
         Optional<Transaction> result = transactionService.getTransactionById(id);
-        assertEquals(Optional.ofNullable(mockTransactions.get(0)), result);
+        assertEquals(Optional.of(mockTransactions.get(0)), result);
     }
 
     @Test
@@ -73,13 +71,13 @@ public class TransactionServiceTest {
 
     @Test
     void testUpdateTransaction() {
-        when(transactionRepository.findById(any())).thenReturn(Optional.ofNullable(mockTransactionDOs.get(0)));
+        when(transactionRepository.findById(any())).thenReturn(Optional.of(mockTransactionDOs.get(0)));
         when(transactionRepository.save(mockTransactionDOs.get(0))).thenReturn(mockTransactionDOs.get(0));
         when(transactionMapper.toModel(mockTransactionDOs.get(0))).thenReturn(mockTransactions.get(0));
         Transaction transaction = mockTransactions.get(0);
         Long id = transaction.getId();
         Optional<Transaction> result = transactionService.updateTransaction(id, transaction);
-        assertEquals(Optional.ofNullable(mockTransactions.get(0)), result);
+        assertEquals(Optional.of(mockTransactions.get(0)), result);
     }
 
     @Test

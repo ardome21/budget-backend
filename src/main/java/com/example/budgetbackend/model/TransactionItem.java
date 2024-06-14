@@ -1,6 +1,5 @@
 package com.example.budgetbackend.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +8,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-
 public class TransactionItem {
     private String description;
     private String category;

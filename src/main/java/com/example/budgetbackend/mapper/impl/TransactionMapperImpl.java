@@ -19,7 +19,8 @@ public class TransactionMapperImpl implements TransactionMapper {
         transactionItem.setCategory(transactionDO.getCategory());
         transactionItem.setAmount(transactionDO.getAmount());
 
-        Transaction transaction = new Transaction(transactionDO.getId());
+        Transaction transaction = new Transaction();
+        transaction.setId(transactionDO.getId());
         transaction.setDate(transactionDO.getDate());
         transaction.setTransactionItem(transactionItem);
         return transaction;
@@ -30,7 +31,8 @@ public class TransactionMapperImpl implements TransactionMapper {
         if (transaction == null) {
             return null;
         }
-        TransactionDO transactionDO = new TransactionDO(transaction.getId());
+        TransactionDO transactionDO = new TransactionDO();
+        transactionDO.setId(transaction.getId());
         transactionDO.setDate(transaction.getDate());
         if (transaction.getTransactionItem() != null) {
             transactionDO.setDescription(transaction.getTransactionItem().getDescription());

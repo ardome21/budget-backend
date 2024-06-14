@@ -26,7 +26,8 @@ public class TransactionMockGenerator {
             String category,
             double amount
     ) {
-        Transaction transaction = new Transaction(id);
+        Transaction transaction = new Transaction();
+        transaction.setId(id);
         transaction.setDate(LocalDate.parse(date, formatter));
         TransactionItem transactionItem = generateTransactionItem(description, category, amount);
         transaction.setTransactionItem(transactionItem);
@@ -47,7 +48,8 @@ public class TransactionMockGenerator {
             String category,
             double amount
     ) {
-        TransactionDO transactionDO = new TransactionDO(id);
+        TransactionDO transactionDO = new TransactionDO();
+        transactionDO.setId(id);
         transactionDO.setDate(LocalDate.parse(date, formatter));
         transactionDO.setDescription(description);
         transactionDO.setCategory(category);
