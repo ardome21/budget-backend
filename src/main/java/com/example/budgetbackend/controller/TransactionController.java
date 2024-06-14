@@ -20,15 +20,21 @@ public class TransactionController {
     }
 
     @GetMapping
-    public List<Transaction> getAllTransactions() {
-        return transactionService.getAllTransactions();
+    public ResponseEntity<List<Transaction>> getAllTransactions() {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(transactionService.getAllTransactions());
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
         Optional<Transaction> transaction = transactionService.getTransactionById(id);
-        return transaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return transaction.map(value -> ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(value)).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 
     @PostMapping
     public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
@@ -41,7 +47,9 @@ public class TransactionController {
     @PutMapping("/{id}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id, @RequestBody Transaction transactionDetails) {
         Optional<Transaction> updatedTransaction = transactionService.updateTransaction(id, transactionDetails);
-        return updatedTransaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return updatedTransaction.map(value -> ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(value)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
