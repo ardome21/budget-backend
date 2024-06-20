@@ -17,7 +17,7 @@ public class ReoccurringTransactionDO {
     private Long id;
 
     @Column(name = "frequency_value", nullable = false)
-    private String frequencyValue;
+    private int frequencyValue;
 
     @Column(name = "frequency_unit", nullable = false)
     private String frequencyUnit;

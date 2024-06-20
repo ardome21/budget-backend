@@ -30,7 +30,8 @@ public class TransactionService {
     }
 
     public Optional<Transaction> getTransactionById(Long id) {
-        return transactionRepository.findById(id).map(transactionMapper::toModel);
+        return transactionRepository.findById(id)
+                .map(transactionMapper::toModel);
     }
 
     public Transaction saveTransaction(Transaction transaction) {
