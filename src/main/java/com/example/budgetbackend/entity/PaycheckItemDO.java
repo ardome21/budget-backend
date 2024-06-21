@@ -17,7 +17,7 @@ public class PaycheckItemDO {
     private Long id;
 
     @Column(name = "paycheck_id", nullable = false)
-    private Long paycheck_id;
+    private Long paycheckId;
 
     @Column(name = "label", nullable = false)
     private String label;
