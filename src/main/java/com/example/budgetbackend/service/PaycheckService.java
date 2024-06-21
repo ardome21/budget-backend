@@ -39,19 +39,25 @@ public class PaycheckService {
     }
 
     public List<Paycheck> getAllPaychecks(){
-//        Step 1: Get All IDs,
         return getAllPaycheckIds()
                 .stream()
                 .map(this::getPaycheckItemsByPaycheckId)
-                .map(paycheckMapper::toModel)
+                .map(paycheckMapper::entityListToModel)
                 .collect(Collectors.toList());
     }
 
     public Optional<Paycheck> getPaycheckById(Long id){
-        return Optional.empty();
+         List<PaycheckItemDO> paycheckItemDOS = getPaycheckItemsByPaycheckId(id);
+         Paycheck paycheck = paycheckMapper.entityListToModel(paycheckItemDOS);
+         return Optional.ofNullable(paycheck);
     }
 
     public Paycheck savePaycheck(Paycheck paycheck){
+        // Step 1: Convert Paycheck into PaycheckDO and List<PaycheckItemDO>
+        // Step 2: Save PaycheckDO into Paycheck Table
+        // Step 3: Save each PaycheckItemDO into PaycheckItems table
+        // Step 4: Convert list of PaycheckItemDOs back into model
+        // Step 5: return
         return null;
     }
 
@@ -59,6 +65,12 @@ public class PaycheckService {
             Long id,
             Paycheck paycheck
     ){
+        // Step 1: Make Sure Paycheck of given ID exists
+        // Step 2: Convert Paycheck into List<PaycheckItemDO>
+        // Step 3: Save each PaycheckItemDO into PaycheckItems Table
+        // Step 4: Convert list of result PaycheckItemsDO back into model
+        // Step 5: return
+
         return Optional.empty();
     }
 
@@ -73,4 +85,5 @@ public class PaycheckService {
     public List<PaycheckItemDO> getPaycheckItemsByPaycheckId(Long paycheckId){
         return paycheckItemRepository.findByPaycheckId(paycheckId);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.example.budgetbackend.mapper.impl;
 
+import com.example.budgetbackend.entity.PaycheckDO;
 import com.example.budgetbackend.entity.PaycheckItemDO;
 import com.example.budgetbackend.mapper.PaycheckMapper;
 import com.example.budgetbackend.model.Paycheck;
@@ -11,7 +12,7 @@ import java.util.List;
 public class PaycheckMapperImpl implements PaycheckMapper {
 
     @Override
-    public Paycheck toModel(List<PaycheckItemDO> entity) {
+    public Paycheck entityListToModel(List<PaycheckItemDO> entity) {
 
 //        Switch Statement
 //        Map Gross Pay
@@ -27,7 +28,12 @@ public class PaycheckMapperImpl implements PaycheckMapper {
     }
 
     @Override
-    public List<PaycheckItemDO> toEntity(Paycheck model){
+    public Paycheck entityToModel(PaycheckDO entity) {
+        return null;
+    }
+
+    @Override
+    public List<PaycheckItemDO> modelToEntityList(Paycheck model){
 
 //        Map Gross Pay
 
@@ -36,6 +42,11 @@ public class PaycheckMapperImpl implements PaycheckMapper {
 //        Map Benefits
 
 //        Map Retirement
+        return null;
+    }
+
+    @Override
+    public PaycheckDO modelToEntity(Paycheck model) {
         return null;
     }
 }
