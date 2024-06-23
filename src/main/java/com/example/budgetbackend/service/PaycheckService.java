@@ -4,6 +4,7 @@ import com.example.budgetbackend.entity.PaycheckDO;
 import com.example.budgetbackend.entity.PaycheckItemDO;
 import com.example.budgetbackend.mapper.PaycheckMapper;
 import com.example.budgetbackend.model.Paycheck;
+import com.example.budgetbackend.model.PaycheckItem;
 import com.example.budgetbackend.repository.PaycheckItemRepository;
 import com.example.budgetbackend.repository.PaycheckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +25,25 @@ public class PaycheckService {
     @Autowired
     public PaycheckService(PaycheckRepository paycheckRepository,
                            PaycheckItemRepository paycheckItemRepository,
-                           PaycheckMapper paycheckMapper){
+                           PaycheckMapper paycheckMapper) {
         this.paycheckRepository = paycheckRepository;
         this.paycheckItemRepository = paycheckItemRepository;
         this.paycheckMapper = paycheckMapper;
     }
 
-    // Get all paycheck ids
-    public List<Long> getAllPaycheckIds(){
+    // GET METHODS
+    public List<Long> getAllPaycheckIds() {
         return paycheckRepository.findAll()
                 .stream()
                 .map(PaycheckDO::getId)
                 .collect(Collectors.toList());
     }
 
-    public List<Paycheck> getAllPaychecks(){
+    public List<PaycheckItemDO> getPaycheckItemsByPaycheckId(Long paycheckId){
+        return paycheckItemRepository.findByPaycheckId(paycheckId);
+    }
+
+    public List<Paycheck> getAllPaychecks() {
         return getAllPaycheckIds()
                 .stream()
                 .map(this::getPaycheckItemsByPaycheckId)
@@ -46,34 +51,53 @@ public class PaycheckService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Paycheck> getPaycheckById(Long id){
-         List<PaycheckItemDO> paycheckItemDOS = getPaycheckItemsByPaycheckId(id);
-         Paycheck paycheck = paycheckMapper.entityListToModel(paycheckItemDOS);
-         return Optional.ofNullable(paycheck);
+    public Optional<Paycheck> getPaycheckById(Long id) {
+        List<PaycheckItemDO> paycheckItemDOS = getPaycheckItemsByPaycheckId(id);
+        Paycheck paycheck = paycheckMapper.entityListToModel(paycheckItemDOS);
+        return Optional.ofNullable(paycheck);
     }
 
-    public Paycheck savePaycheck(Paycheck paycheck){
-        // Step 1: Convert Paycheck into PaycheckDO and List<PaycheckItemDO>
-        // Step 2: Save PaycheckDO into Paycheck Table
-        // Step 3: Save each PaycheckItemDO into PaycheckItems table
-        // Step 4: Convert list of PaycheckItemDOs back into model
-        // Step 5: return
-        return null;
+    // TODO getPaycheckItemById(Long)
+
+    // SAVE METHODS
+
+    public Paycheck savePaycheck(Paycheck paycheck) {
+        PaycheckDO paycheckDO = paycheckMapper.modelToEntity(paycheck);
+        List<PaycheckItemDO> paycheckItemDOList = paycheckMapper.modelToEntityList(paycheck);
+        paycheckRepository.save(paycheckDO);
+        List<PaycheckItemDO> savedPaycheckItemDOList = paycheckItemDOList.stream()
+                .map(paycheckItemRepository::save)
+                .toList();
+        return paycheckMapper.entityListToModel(savedPaycheckItemDOList);
     }
+
+    // TODO savePaycheckItem(PaycheckItem)
+
+    // UPDATE METHODS
 
     public Optional<Paycheck> updatePaycheck(
             Long id,
             Paycheck paycheck
-    ){
+    ) {
         // Step 1: Make Sure Paycheck of given ID exists
+        if (!paycheckRepository.existsById(id)) {
+            return Optional.empty();
+        }
         // Step 2: Convert Paycheck into List<PaycheckItemDO>
+        List<PaycheckItemDO> paycheckItemDOList = paycheckMapper.modelToEntityList(paycheck);
         // Step 3: Save each PaycheckItemDO into PaycheckItems Table
+        List<PaycheckItemDO> savedPaycheckDO = paycheckItemDOList.stream()
+                .map(paycheckItemRepository::save)
+                .toList();
         // Step 4: Convert list of result PaycheckItemsDO back into model
+        return Optional.ofNullable(paycheckMapper.entityListToModel(savedPaycheckDO));
         // Step 5: return
-
-        return Optional.empty();
     }
 
+    // TODO updatePaycheckItem(Long, PaycheckItem)
+
+
+    // DELETE METHODS
     public boolean deletePaycheck(Long id){
         if(paycheckRepository.existsById(id)){
             paycheckRepository.deleteById(id);
@@ -82,8 +106,15 @@ public class PaycheckService {
         return false;
     }
 
-    public List<PaycheckItemDO> getPaycheckItemsByPaycheckId(Long paycheckId){
-        return paycheckItemRepository.findByPaycheckId(paycheckId);
-    }
+    // TODO deletePaycheckItem(Long)
 
+
+    // BUSINESS LOGIC METHODS
+    public double calculateTakeHome(
+            PaycheckItem grossPay,
+            List<PaycheckItem> taxes,
+            List<PaycheckItem> benefits,
+            List<PaycheckItem> retirement) {
+        return 0;
+    }
 }

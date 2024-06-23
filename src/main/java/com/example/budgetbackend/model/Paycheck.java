@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class Paycheck {
     long id;
-    double grossPay;
+    PaycheckItem grossPay;
     List<PaycheckItem> taxes;
     List<PaycheckItem> benefits;
     List<PaycheckItem> retirement;

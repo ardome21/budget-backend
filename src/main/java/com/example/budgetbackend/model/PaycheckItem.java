@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PaycheckItem {
+    Long id;
     String label;
     double value;
 }
