@@ -48,6 +48,7 @@ public class PaycheckService {
                 .stream()
                 .map(this::getPaycheckItemsByPaycheckId)
                 .map(paycheckMapper::entityListToModel)
+                .map(this::setTakeHomeForPaycheck)
                 .collect(Collectors.toList());
     }
 
@@ -110,11 +111,24 @@ public class PaycheckService {
 
 
     // BUSINESS LOGIC METHODS
-    public double calculateTakeHome(
-            PaycheckItem grossPay,
-            List<PaycheckItem> taxes,
-            List<PaycheckItem> benefits,
-            List<PaycheckItem> retirement) {
-        return 0;
+    public double calculateTakeHome(Paycheck paycheck) {
+        double grossPay = paycheck.getGrossPay().getValue();
+        double taxes = calculatePaycheckDeduction(paycheck.getTaxes());
+        double benefits = calculatePaycheckDeduction(paycheck.getBenefits());
+        double retirement = calculatePaycheckDeduction(paycheck.getRetirement());
+
+        return grossPay - taxes - benefits - retirement;
+    }
+
+    public double calculatePaycheckDeduction(List<PaycheckItem> itemList){
+        return itemList.stream()
+                .mapToDouble(PaycheckItem::getValue)
+                .sum();
+    }
+
+    public Paycheck setTakeHomeForPaycheck(Paycheck paycheck){
+        double takeHome = calculateTakeHome(paycheck);
+        paycheck.setTakeHome(takeHome);
+        return paycheck;
     }
 }

@@ -5,7 +5,6 @@ import com.example.budgetbackend.entity.PaycheckItemDO;
 import com.example.budgetbackend.mapper.PaycheckMapper;
 import com.example.budgetbackend.model.Paycheck;
 import com.example.budgetbackend.model.PaycheckItem;
-import com.example.budgetbackend.service.PaycheckService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,12 +14,9 @@ import java.util.stream.Collectors;
 @Component
 public class PaycheckMapperImpl implements PaycheckMapper {
 
-    private final PaycheckService paycheckService;
+    public PaycheckMapperImpl() {}
 
-    public PaycheckMapperImpl(PaycheckService paycheckService) {
-        this.paycheckService = paycheckService;
-    }
-
+    // FIXME: Function shouldn't set takehome, idk where that should go
     @Override
     public Paycheck entityListToModel(List<PaycheckItemDO> entity){
         if(entity.isEmpty()){
@@ -44,15 +40,12 @@ public class PaycheckMapperImpl implements PaycheckMapper {
             }
         }
 
-        double takeHome = paycheckService.calculateTakeHome(grossPay,taxes,benefits,retirement);
-
         Paycheck paycheck = new Paycheck();
         paycheck.setId(paycheckId);
         paycheck.setGrossPay(grossPay);
         paycheck.setTaxes(taxes);
         paycheck.setBenefits(benefits);
         paycheck.setRetirement(retirement);
-        paycheck.setTakeHome(takeHome);
         return paycheck;
     }
 
