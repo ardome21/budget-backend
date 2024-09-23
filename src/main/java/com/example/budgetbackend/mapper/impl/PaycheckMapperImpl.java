@@ -16,7 +16,6 @@ public class PaycheckMapperImpl implements PaycheckMapper {
 
     public PaycheckMapperImpl() {}
 
-    // FIXME: Function shouldn't set takehome, idk where that should go
     @Override
     public Paycheck entityListToModel(List<PaycheckItemDO> entity){
         if(entity.isEmpty()){
