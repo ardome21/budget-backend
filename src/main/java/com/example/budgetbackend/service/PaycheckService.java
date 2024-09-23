@@ -43,6 +43,7 @@ public class PaycheckService {
         return paycheckItemRepository.findByPaycheckId(paycheckId);
     }
 
+    // TODO: Utilize
     public List<Paycheck> getAllPaychecks() {
         return getAllPaycheckIds()
                 .stream()
@@ -52,6 +53,7 @@ public class PaycheckService {
                 .collect(Collectors.toList());
     }
 
+    // TODO: Utilize
     public Optional<Paycheck> getPaycheckById(Long id) {
         List<PaycheckItemDO> paycheckItemDOS = getPaycheckItemsByPaycheckId(id);
         Paycheck paycheck = paycheckMapper.entityListToModel(paycheckItemDOS);
@@ -62,6 +64,7 @@ public class PaycheckService {
 
     // SAVE METHODS
 
+    // TODO: Utilize
     public Paycheck savePaycheck(Paycheck paycheck) {
         PaycheckDO paycheckDO = paycheckMapper.modelToEntity(paycheck);
         List<PaycheckItemDO> paycheckItemDOList = paycheckMapper.modelToEntityList(paycheck);
@@ -76,6 +79,7 @@ public class PaycheckService {
 
     // UPDATE METHODS
 
+    // TODO: Utilize
     public Optional<Paycheck> updatePaycheck(
             Long id,
             Paycheck paycheck
@@ -99,6 +103,7 @@ public class PaycheckService {
 
 
     // DELETE METHODS
+    // TODO: Utilize
     public boolean deletePaycheck(Long id){
         if(paycheckRepository.existsById(id)){
             paycheckRepository.deleteById(id);
