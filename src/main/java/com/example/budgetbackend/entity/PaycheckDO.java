@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "budget")
+@Table(name = "paychecks")
 public class PaycheckDO {
 
     @Id
