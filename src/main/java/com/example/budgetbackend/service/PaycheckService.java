@@ -7,6 +7,7 @@ import com.example.budgetbackend.model.Paycheck;
 import com.example.budgetbackend.model.PaycheckItem;
 import com.example.budgetbackend.repository.PaycheckItemRepository;
 import com.example.budgetbackend.repository.PaycheckRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,6 @@ public class PaycheckService {
         return paycheckItemRepository.findByPaycheckId(paycheckId);
     }
 
-    // TODO: Utilize
     public List<Paycheck> getAllPaychecks() {
         return getAllPaycheckIds()
                 .stream()
@@ -53,18 +53,19 @@ public class PaycheckService {
                 .collect(Collectors.toList());
     }
 
-    // TODO: Utilize
     public Optional<Paycheck> getPaycheckById(Long id) {
         List<PaycheckItemDO> paycheckItemDOS = getPaycheckItemsByPaycheckId(id);
         Paycheck paycheck = paycheckMapper.entityListToModel(paycheckItemDOS);
         return Optional.ofNullable(paycheck);
     }
 
-    // TODO getPaycheckItemById(Long)
+    public Optional<PaycheckItem> getPaycheckItemById(Long id) {
+        return paycheckItemRepository.findById(id)
+                .map(paycheckMapper::entityItemToModelItem);
+    }
 
     // SAVE METHODS
 
-    // TODO: Utilize
     public Paycheck savePaycheck(Paycheck paycheck) {
         PaycheckDO paycheckDO = paycheckMapper.modelToEntity(paycheck);
         List<PaycheckItemDO> paycheckItemDOList = paycheckMapper.modelToEntityList(paycheck);
@@ -75,7 +76,11 @@ public class PaycheckService {
         return paycheckMapper.entityListToModel(savedPaycheckItemDOList);
     }
 
-    // TODO savePaycheckItem(PaycheckItem)
+    public PaycheckItem savePaycheckItem(Long paycheckID, String category, PaycheckItem paycheckItem) {
+        PaycheckItemDO paycheckItemDO = paycheckMapper.modelItemToEntityItem(paycheckID, category, paycheckItem);
+        PaycheckItemDO savedPaycheckItem = paycheckItemRepository.save(paycheckItemDO);
+        return paycheckMapper.entityItemToModelItem(savedPaycheckItem);
+    }
 
     // UPDATE METHODS
 
@@ -84,26 +89,34 @@ public class PaycheckService {
             Long id,
             Paycheck paycheck
     ) {
-        // Step 1: Make Sure Paycheck of given ID exists
         if (!paycheckRepository.existsById(id)) {
             return Optional.empty();
         }
-        // Step 2: Convert Paycheck into List<PaycheckItemDO>
         List<PaycheckItemDO> paycheckItemDOList = paycheckMapper.modelToEntityList(paycheck);
-        // Step 3: Save each PaycheckItemDO into PaycheckItems Table
         List<PaycheckItemDO> savedPaycheckDO = paycheckItemDOList.stream()
                 .map(paycheckItemRepository::save)
                 .toList();
-        // Step 4: Convert list of result PaycheckItemsDO back into model
         return Optional.ofNullable(paycheckMapper.entityListToModel(savedPaycheckDO));
-        // Step 5: return
     }
 
-    // TODO updatePaycheckItem(Long, PaycheckItem)
-
+    public Optional<PaycheckItem> updatePaycheckItem(
+            Long id,
+            Long paycheckId,
+            String category,
+            PaycheckItem paycheckItem
+    ) {
+        if (!paycheckRepository.existsById(paycheckId)) {
+            throw new EntityNotFoundException("Paycheck with ID " + paycheckId + " does not exist");
+        }
+        if (paycheckItemRepository.existsById(id)) {
+            return Optional.empty();
+        }
+        PaycheckItemDO paycheckItemDO = paycheckMapper.modelItemToEntityItem(paycheckId, category, paycheckItem);
+        PaycheckItemDO savedPaycheckItemDO = paycheckItemRepository.save(paycheckItemDO);
+        return Optional.of(paycheckMapper.entityItemToModelItem(savedPaycheckItemDO));
+    }
 
     // DELETE METHODS
-    // TODO: Utilize
     public boolean deletePaycheck(Long id){
         if(paycheckRepository.existsById(id)){
             paycheckRepository.deleteById(id);
@@ -112,7 +125,14 @@ public class PaycheckService {
         return false;
     }
 
-    // TODO deletePaycheckItem(Long)
+
+    public boolean deletePaycheckItem(Long id) {
+        if(paycheckItemRepository.existsById(id)){
+            paycheckItemRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 
 
     // BUSINESS LOGIC METHODS
