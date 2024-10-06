@@ -65,11 +65,11 @@ public class PaycheckService {
     }
 
     // SAVE METHODS
-
     public Paycheck savePaycheck(Paycheck paycheck) {
         PaycheckDO paycheckDO = paycheckMapper.modelToEntity(paycheck);
-        List<PaycheckItemDO> paycheckItemDOList = paycheckMapper.modelToEntityList(paycheck);
         paycheckRepository.save(paycheckDO);
+        paycheck.setId(paycheckDO.getId());
+        List<PaycheckItemDO> paycheckItemDOList = paycheckMapper.modelToEntityList(paycheck);
         List<PaycheckItemDO> savedPaycheckItemDOList = paycheckItemDOList.stream()
                 .map(paycheckItemRepository::save)
                 .toList();
@@ -77,6 +77,9 @@ public class PaycheckService {
     }
 
     public PaycheckItem savePaycheckItem(Long paycheckID, String category, PaycheckItem paycheckItem) {
+        // TODO: Add restrictions
+        // 1. category can't be gross_pay -> Give error to update, not save
+        // 2. If entry of matching paycheckId, category, item.label exist -> Give error to update, not save
         PaycheckItemDO paycheckItemDO = paycheckMapper.modelItemToEntityItem(paycheckID, category, paycheckItem);
         PaycheckItemDO savedPaycheckItem = paycheckItemRepository.save(paycheckItemDO);
         return paycheckMapper.entityItemToModelItem(savedPaycheckItem);

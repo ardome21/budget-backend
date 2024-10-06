@@ -27,7 +27,6 @@ public class PaycheckController {
                 .body(paycheckService.getAllPaychecks());
     }
 
-    // TODO Get Paycheck By Id
     @GetMapping("/{id}")
     public ResponseEntity<Paycheck> getPaycheckById(@PathVariable long id){
         Optional<Paycheck> paycheck = paycheckService.getPaycheckById(id);
@@ -36,7 +35,6 @@ public class PaycheckController {
                 .body(value)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // TODO Get PaycheckItem by Id
     @GetMapping("/items/{id}")
     public ResponseEntity<PaycheckItem> getPaycheckItemById(@PathVariable long id){
         Optional<PaycheckItem> paycheckItem = paycheckService.getPaycheckItemById(id);
