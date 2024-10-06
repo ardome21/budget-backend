@@ -38,34 +38,40 @@ public class ReoccurringTransactionService {
                 .map(reoccurringTransactionMapper::toModel);
     }
 
-//    TODO: Make it impossibile to save a transaction if the id already exist
     public ReoccurringTransaction saveReoccurringTransaction(ReoccurringTransaction reoccurringTransaction){
+        // TODO: Add Restrictions:
+        // 1. If entry of matching description and category -> Give error to update, not save
         ReoccurringTransactionDO reoccurringTransactionDO = reoccurringTransactionMapper
                 .toEntity(reoccurringTransaction);
         ReoccurringTransactionDO savedEntity = reoccurringTransactionRepository.save(reoccurringTransactionDO);
         return reoccurringTransactionMapper.toModel(savedEntity);
     }
 
-//    FIXME This should probably be its own function, multiline lambda could be named
     public Optional<ReoccurringTransaction> updateReoccurringTransaction(
             Long id,
             ReoccurringTransaction reoccurringTransaction
     ) {
-        return reoccurringTransactionRepository.findById(id).map(reoccurringTransactionDO -> {
-            Frequency frequency = reoccurringTransaction.getFrequency();
-            if(frequency != null){
-                reoccurringTransactionDO.setFrequencyValue(frequency.getValue());
-                reoccurringTransactionDO.setFrequencyUnit(frequency.getUnit());
-            }
-            TransactionItem transactionItem = reoccurringTransaction.getTransactionItem();
-            if(transactionItem != null){
-                reoccurringTransactionDO.setDescription(transactionItem.getDescription());
-                reoccurringTransactionDO.setCategory(transactionItem.getCategory());
-                reoccurringTransactionDO.setAmount(transactionItem.getAmount());
-            }
-            ReoccurringTransactionDO updatedEntity = reoccurringTransactionRepository.save(reoccurringTransactionDO);
-            return reoccurringTransactionMapper.toModel(updatedEntity);
-        });
+        return reoccurringTransactionRepository.findById(id)
+                .map(reoccurringTransactionDO -> applyUpdates(reoccurringTransactionDO, reoccurringTransaction));
+    }
+
+    private ReoccurringTransaction applyUpdates(
+            ReoccurringTransactionDO reoccurringTransactionDO,
+            ReoccurringTransaction reoccurringTransaction
+    ) {
+        Frequency frequency = reoccurringTransaction.getFrequency();
+        if(frequency != null){
+            reoccurringTransactionDO.setFrequencyValue(frequency.getValue());
+            reoccurringTransactionDO.setFrequencyUnit(frequency.getUnit());
+        }
+        TransactionItem transactionItem = reoccurringTransaction.getTransactionItem();
+        if(transactionItem != null){
+            reoccurringTransactionDO.setDescription(transactionItem.getDescription());
+            reoccurringTransactionDO.setCategory(transactionItem.getCategory());
+            reoccurringTransactionDO.setAmount(transactionItem.getAmount());
+        }
+        ReoccurringTransactionDO updatedEntity = reoccurringTransactionRepository.save(reoccurringTransactionDO);
+        return reoccurringTransactionMapper.toModel(updatedEntity);
     }
 
     public boolean deleteReoccurringTransaction(Long id){
