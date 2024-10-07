@@ -38,9 +38,8 @@ public class ReoccurringTransactionService {
                 .map(reoccurringTransactionMapper::toModel);
     }
 
-    public ReoccurringTransaction saveReoccurringTransaction(ReoccurringTransaction reoccurringTransaction){
-        // TODO: Add Restrictions:
-        // 1. If entry of matching description and category -> Give error to update, not save
+    public ReoccurringTransaction createReoccurringTransaction(ReoccurringTransaction reoccurringTransaction){
+        throwIfReoccurringTransactionExists(reoccurringTransaction);
         ReoccurringTransactionDO reoccurringTransactionDO = reoccurringTransactionMapper
                 .toEntity(reoccurringTransaction);
         ReoccurringTransactionDO savedEntity = reoccurringTransactionRepository.save(reoccurringTransactionDO);
@@ -80,6 +79,21 @@ public class ReoccurringTransactionService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    private void throwIfReoccurringTransactionExists(ReoccurringTransaction reoccurringTransaction) {
+        TransactionItem transactionItem = reoccurringTransaction.getTransactionItem();
+        Optional<ReoccurringTransactionDO> existingTransaction = reoccurringTransactionRepository
+                .findByDescriptionAndCategory(
+                        transactionItem.getDescription(),
+                        transactionItem.getCategory()
+                );
+        if (existingTransaction.isPresent()){
+            Long id = existingTransaction.get().getId();
+            throw new IllegalArgumentException(
+                    "A transaction with the same description and category already exists with ID: " + id + ". Please use the update method."
+            );
         }
     }
 }

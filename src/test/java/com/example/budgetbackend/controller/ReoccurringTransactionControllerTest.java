@@ -74,14 +74,14 @@ public class ReoccurringTransactionControllerTest {
 
     @Test
     void testCreateReoccurringTransaction_shouldReturnReoccurringTransaction() throws Exception {
-        when(reoccurringTransactionService.saveReoccurringTransaction(any(ReoccurringTransaction.class))).thenReturn(mockReoccurringTransaction);
+        when(reoccurringTransactionService.createReoccurringTransaction(any(ReoccurringTransaction.class))).thenReturn(mockReoccurringTransaction);
         String inputJsonString = asJsonString(mockReoccurringTransaction);
         mockMvc.perform(post("/reoccurring")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(inputJsonString))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(mockReoccurringTransaction.getId()));
-        verify(reoccurringTransactionService, times(1)).saveReoccurringTransaction(any(ReoccurringTransaction.class));
+        verify(reoccurringTransactionService, times(1)).createReoccurringTransaction(any(ReoccurringTransaction.class));
     }
 
     @Test

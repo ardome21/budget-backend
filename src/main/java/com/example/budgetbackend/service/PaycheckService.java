@@ -65,7 +65,7 @@ public class PaycheckService {
     }
 
     // SAVE METHODS
-    public Paycheck savePaycheck(Paycheck paycheck) {
+    public Paycheck createPaycheck(Paycheck paycheck) {
         PaycheckDO paycheckDO = paycheckMapper.modelToEntity(paycheck);
         paycheckRepository.save(paycheckDO);
         paycheck.setId(paycheckDO.getId());
@@ -76,18 +76,18 @@ public class PaycheckService {
         return paycheckMapper.entityListToModel(savedPaycheckItemDOList);
     }
 
-    public PaycheckItem savePaycheckItem(Long paycheckID, String category, PaycheckItem paycheckItem) {
-        // TODO: Add restrictions
-        // 1. category can't be gross_pay -> Give error to update, not save
-        // 2. If entry of matching paycheckId, category, item.label exist -> Give error to update, not save
+    public PaycheckItem createPaycheckItem(Long paycheckID, String category, PaycheckItem paycheckItem) {
+        if(category.equals("gross_pay")){
+            throw new IllegalArgumentException("Cannot create new gross pay. Please update existing gross pay instead.");
+        }
+        throwIfPaycheckItemExists(paycheckID,category,paycheckItem);
+
         PaycheckItemDO paycheckItemDO = paycheckMapper.modelItemToEntityItem(paycheckID, category, paycheckItem);
         PaycheckItemDO savedPaycheckItem = paycheckItemRepository.save(paycheckItemDO);
         return paycheckMapper.entityItemToModelItem(savedPaycheckItem);
     }
 
     // UPDATE METHODS
-
-    // TODO: Utilize
     public Optional<Paycheck> updatePaycheck(
             Long id,
             Paycheck paycheck
@@ -128,7 +128,6 @@ public class PaycheckService {
         return false;
     }
 
-
     public boolean deletePaycheckItem(Long id) {
         if(paycheckItemRepository.existsById(id)){
             paycheckItemRepository.deleteById(id);
@@ -137,9 +136,8 @@ public class PaycheckService {
         return false;
     }
 
-
     // BUSINESS LOGIC METHODS
-    public double calculateTakeHome(Paycheck paycheck) {
+    private double calculateTakeHome(Paycheck paycheck) {
         double grossPay = paycheck.getGrossPay().getValue();
         double taxes = calculatePaycheckDeduction(paycheck.getTaxes());
         double benefits = calculatePaycheckDeduction(paycheck.getBenefits());
@@ -148,15 +146,32 @@ public class PaycheckService {
         return grossPay - taxes - benefits - retirement;
     }
 
-    public double calculatePaycheckDeduction(List<PaycheckItem> itemList){
+    private double calculatePaycheckDeduction(List<PaycheckItem> itemList){
         return itemList.stream()
                 .mapToDouble(PaycheckItem::getValue)
                 .sum();
     }
 
-    public Paycheck setTakeHomeForPaycheck(Paycheck paycheck){
+    private Paycheck setTakeHomeForPaycheck(Paycheck paycheck){
         double takeHome = calculateTakeHome(paycheck);
         paycheck.setTakeHome(takeHome);
         return paycheck;
+    }
+
+    private void throwIfPaycheckItemExists(Long paycheckID, String category, PaycheckItem paycheckItem) {
+        Optional<PaycheckItemDO> existingPaycheckItem = paycheckItemRepository
+                .findByPaycheckIdAndCategoryAndLabel(
+                        paycheckID,
+                        category,
+                        paycheckItem.getLabel()
+                );
+        if(existingPaycheckItem.isPresent()){
+            Long id = existingPaycheckItem.get().getId();
+            throw new IllegalArgumentException(
+                    "A paycheck item with category '" + category + "' and label '" + paycheckItem.getLabel() +
+                            "' already exists for paycheck ID: " + paycheckID + " (Paycheck Item ID: " + id +
+                            "). Please update the existing item."
+            );
+        }
     }
 }

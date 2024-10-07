@@ -46,7 +46,7 @@ public class PaycheckController {
     // TODO Post New Paycheck
     @PostMapping()
     public ResponseEntity<Paycheck> createPaycheck(@RequestBody Paycheck paycheck){
-        Paycheck savedPaycheck = paycheckService.savePaycheck(paycheck);
+        Paycheck savedPaycheck = paycheckService.createPaycheck(paycheck);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(savedPaycheck);
@@ -58,7 +58,7 @@ public class PaycheckController {
                                                            @RequestParam String category,
                                                            @RequestBody PaycheckItem paycheckItem
     ){
-        PaycheckItem savedPaycheckItem = paycheckService.savePaycheckItem(paycheckId, category ,paycheckItem);
+        PaycheckItem savedPaycheckItem = paycheckService.createPaycheckItem(paycheckId, category ,paycheckItem);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(savedPaycheckItem);

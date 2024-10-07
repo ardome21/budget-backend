@@ -38,7 +38,7 @@ public class ReoccurringTransactionController {
     @PostMapping
     public ResponseEntity<ReoccurringTransaction> createReoccurringTransaction(@RequestBody ReoccurringTransaction reoccurringTransaction) {
         ReoccurringTransaction savedReoccurringTransaction =
-                reoccurringTransactionService.saveReoccurringTransaction(reoccurringTransaction);
+                reoccurringTransactionService.createReoccurringTransaction(reoccurringTransaction);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(savedReoccurringTransaction);

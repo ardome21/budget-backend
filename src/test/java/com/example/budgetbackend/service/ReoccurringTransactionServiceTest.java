@@ -66,7 +66,7 @@ public class ReoccurringTransactionServiceTest {
         when(reoccurringTransactionMapper.toEntity(any())).thenReturn(mockReoccurringTransactionDOs.get(0));
         when(reoccurringTransactionRepository.save(any())).thenReturn(mockReoccurringTransactionDOs.get(0));
         when(reoccurringTransactionMapper.toModel(any())).thenReturn(mockReoccurringTransactions.get(0));
-        ReoccurringTransaction result = reoccurringTransactionService.saveReoccurringTransaction(mockReoccurringTransactions.get(0));
+        ReoccurringTransaction result = reoccurringTransactionService.createReoccurringTransaction(mockReoccurringTransactions.get(0));
         assertEquals(mockReoccurringTransactions.get(0), result);
     }
 
