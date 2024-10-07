@@ -15,6 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,11 +36,18 @@ public class TransactionControllerTest {
     private List<Transaction> mockTransactions;
     private Transaction mockTransaction;
 
-
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockTransactions = TransactionMockGenerator.generateTransactionList();
+    void setUp() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        // Load JSON file from resources using InputStream (safer for different environments)
+        InputStream jsonStream = getClass().getClassLoader().getResourceAsStream("mocks/transactions.json");
+
+        // Deserialize JSON file into List of Transaction objects
+        mockTransactions = objectMapper.readValue(jsonStream,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Transaction.class));
+
+        // Example: Get the first transaction for later use
         mockTransaction = mockTransactions.get(0);
     }
 
