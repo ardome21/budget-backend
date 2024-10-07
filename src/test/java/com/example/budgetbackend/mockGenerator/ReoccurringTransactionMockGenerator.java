@@ -8,6 +8,8 @@ import com.example.budgetbackend.model.TransactionItem;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// CODE_DEBT: To be deleted and all mocks should be hardcode JSONS
 public class ReoccurringTransactionMockGenerator {
 
     private static List<Object[]> generateRawDataList() {

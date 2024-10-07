@@ -5,12 +5,16 @@ import com.example.budgetbackend.mapper.TransactionMapper;
 import com.example.budgetbackend.model.Transaction;
 import com.example.budgetbackend.repository.TransactionRepository;
 import com.example.budgetbackend.mockGenerator.TransactionMockGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +38,16 @@ public class TransactionServiceTest {
     private List<TransactionDO> mockTransactionDOs;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
-        mockTransactions = TransactionMockGenerator.generateTransactionList();
-        mockTransactionDOs = TransactionMockGenerator.generateTransactionDOList();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        InputStream jsonStream = getClass().getClassLoader().getResourceAsStream("mocks/transactions.json");
+        mockTransactions = objectMapper.readValue(jsonStream,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Transaction.class));
+        InputStream jsonStreamDO = getClass().getClassLoader().getResourceAsStream("mocks/transactionDOs.json");
+        mockTransactionDOs = objectMapper.readValue(jsonStreamDO,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, TransactionDO.class));
     }
 
     @Test
@@ -45,6 +55,7 @@ public class TransactionServiceTest {
         when(transactionRepository.findAll()).thenReturn(mockTransactionDOs);
         when(transactionMapper.toModel(mockTransactionDOs.get(0))).thenReturn(mockTransactions.get(0));
         when(transactionMapper.toModel(mockTransactionDOs.get(1))).thenReturn(mockTransactions.get(1));
+        when(transactionMapper.toModel(mockTransactionDOs.get(2))).thenReturn(mockTransactions.get(2));
         List<Transaction> result = transactionService.getAllTransactions();
         assertEquals(mockTransactions, result);
         verify(transactionRepository, times(1)).findAll();
