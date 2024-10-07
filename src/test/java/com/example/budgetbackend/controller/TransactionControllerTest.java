@@ -40,14 +40,9 @@ public class TransactionControllerTest {
     void setUp() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        // Load JSON file from resources using InputStream (safer for different environments)
         InputStream jsonStream = getClass().getClassLoader().getResourceAsStream("mocks/transactions.json");
-
-        // Deserialize JSON file into List of Transaction objects
         mockTransactions = objectMapper.readValue(jsonStream,
                 objectMapper.getTypeFactory().constructCollectionType(List.class, Transaction.class));
-
-        // Example: Get the first transaction for later use
         mockTransaction = mockTransactions.get(0);
     }
 
