@@ -79,9 +79,8 @@ public class ReoccurringTransactionServiceTest {
                 mockReoccurringTransactions.get(0).getTransactionItem().getDescription(),
                 mockReoccurringTransactions.get(0).getTransactionItem().getCategory()))
                 .thenReturn(Optional.of(mockReoccurringTransactionDOs.get(0)));
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            reoccurringTransactionService.createReoccurringTransaction(mockReoccurringTransactions.get(0));
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                reoccurringTransactionService.createReoccurringTransaction(mockReoccurringTransactions.get(0)));
         assertEquals("A transaction with the same description and category already exists with ID: "
                         + mockReoccurringTransactionDOs.get(0).getId() + ". Please use the update method.",
                 exception.getMessage());

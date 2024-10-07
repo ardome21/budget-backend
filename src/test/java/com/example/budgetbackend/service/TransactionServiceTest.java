@@ -5,8 +5,6 @@ import com.example.budgetbackend.mapper.TransactionMapper;
 import com.example.budgetbackend.model.Transaction;
 import com.example.budgetbackend.repository.TransactionRepository;
 import com.example.budgetbackend.testUtils.DataLoader;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
