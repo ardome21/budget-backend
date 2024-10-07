@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "frequencyValue": 1,
+    "frequencyUnit": "month",
+    "description": "Gym Membership",
+    "category": "Health & Fitness",
+    "amount": 45.99
+  },
+  {
+    "id": 2,
+    "frequencyValue": 1,
+    "frequencyUnit": "year",
+    "description": "Groceries",
+    "category": "Food",
+    "amount": 150.75
+  },
+  {
+    "id": 3,
+    "frequencyValue": 1,
+    "frequencyUnit": "week",
+    "description": "Car Insurance",
+    "category": "Insurance",
+    "amount": 1200.00
+  },
+  {
+    "id": 4,
+    "frequencyValue": 2,
+    "frequencyUnit": "month",
+    "description": "Coffee",
+    "category": "Food & Drink",
+    "amount": 4.50
+  }
+]

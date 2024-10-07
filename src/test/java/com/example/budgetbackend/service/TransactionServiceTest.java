@@ -4,7 +4,7 @@ import com.example.budgetbackend.entity.TransactionDO;
 import com.example.budgetbackend.mapper.TransactionMapper;
 import com.example.budgetbackend.model.Transaction;
 import com.example.budgetbackend.repository.TransactionRepository;
-import com.example.budgetbackend.mockGenerator.TransactionMockGenerator;
+import com.example.budgetbackend.testUtils.DataLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,14 +40,8 @@ public class TransactionServiceTest {
     @BeforeEach
     void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        InputStream jsonStream = getClass().getClassLoader().getResourceAsStream("mocks/transactions.json");
-        mockTransactions = objectMapper.readValue(jsonStream,
-                objectMapper.getTypeFactory().constructCollectionType(List.class, Transaction.class));
-        InputStream jsonStreamDO = getClass().getClassLoader().getResourceAsStream("mocks/transactionDOs.json");
-        mockTransactionDOs = objectMapper.readValue(jsonStreamDO,
-                objectMapper.getTypeFactory().constructCollectionType(List.class, TransactionDO.class));
+        mockTransactions = DataLoader.loadMockData("mocks/transactions.json", Transaction.class);
+        mockTransactionDOs = DataLoader.loadMockData("mocks/transactionDOs.json", TransactionDO.class);
     }
 
     @Test

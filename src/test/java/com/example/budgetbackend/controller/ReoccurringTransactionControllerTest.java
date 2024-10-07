@@ -1,8 +1,8 @@
 package com.example.budgetbackend.controller;
 
-import com.example.budgetbackend.mockGenerator.ReoccurringTransactionMockGenerator;
 import com.example.budgetbackend.model.ReoccurringTransaction;
 import com.example.budgetbackend.service.ReoccurringTransactionService;
+import com.example.budgetbackend.testUtils.DataLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,9 +38,9 @@ public class ReoccurringTransactionControllerTest {
     private ReoccurringTransaction mockReoccurringTransaction;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
-        mockReoccurringTransactions = ReoccurringTransactionMockGenerator.generateReoccuringTransactionList();
+        mockReoccurringTransactions = DataLoader.loadMockData("mocks/reoccurringTransactions.json", ReoccurringTransaction.class);
         mockReoccurringTransaction = mockReoccurringTransactions.get(0);
     }
 

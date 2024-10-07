@@ -2,6 +2,7 @@ package com.example.budgetbackend.controller;
 
 import com.example.budgetbackend.model.Transaction;
 import com.example.budgetbackend.service.TransactionService;
+import com.example.budgetbackend.testUtils.DataLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,11 +36,7 @@ public class TransactionControllerTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        InputStream jsonStream = getClass().getClassLoader().getResourceAsStream("mocks/transactions.json");
-        mockTransactions = objectMapper.readValue(jsonStream,
-                objectMapper.getTypeFactory().constructCollectionType(List.class, Transaction.class));
+        mockTransactions = DataLoader.loadMockData("mocks/transactions.json", Transaction.class);
         mockTransaction = mockTransactions.get(0);
     }
 

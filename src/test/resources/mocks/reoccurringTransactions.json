@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "frequency": {
+      "value": 1,
+      "unit": "month"
+    },
+    "transactionItem": {
+      "description": "Gym Membership",
+      "category": "Health & Fitness",
+      "amount": 45.99
+    }
+  },
+  {
+    "id": 2,
+    "frequency": {
+      "value": 1,
+      "unit": "year"
+    },
+    "transactionItem": {
+      "description": "Groceries",
+      "category": "Food",
+      "amount": 150.75
+    }
+  },
+  {
+    "id": 3,
+    "frequency": {
+      "value": 1,
+      "unit": "week"
+    },
+    "transactionItem": {
+      "description": "Car Insurance",
+      "category": "Insurance",
+      "amount": 1200.00
+    }
+  },
+  {
+    "id": 4,
+    "frequency": {
+      "value": 2,
+      "unit": "month"
+    },
+    "transactionItem": {
+      "description": "Coffee",
+      "category": "Food & Drink",
+      "amount": 4.50
+    }
+  }
+]
