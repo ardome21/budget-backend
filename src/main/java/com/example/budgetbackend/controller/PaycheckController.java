@@ -43,7 +43,6 @@ public class PaycheckController {
                 .body(value)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // TODO Post New Paycheck
     @PostMapping()
     public ResponseEntity<Paycheck> createPaycheck(@RequestBody Paycheck paycheck){
         Paycheck savedPaycheck = paycheckService.createPaycheck(paycheck);
@@ -52,7 +51,6 @@ public class PaycheckController {
                 .body(savedPaycheck);
     }
 
-    // TODO Post New PaycheckItem
     @PostMapping("/items")
     public ResponseEntity<PaycheckItem> createPaycheckItem(@RequestParam Long paycheckId,
                                                            @RequestParam String category,

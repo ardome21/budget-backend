@@ -75,16 +75,6 @@ public class PaycheckMapperImpl implements PaycheckMapper {
     }
 
     @Override
-    public Paycheck entityToModel(PaycheckDO entity) {
-        if(entity == null){
-            return null;
-        }
-        Paycheck paycheck = new Paycheck();
-        paycheck.setId(entity.getId());
-        return paycheck;
-    }
-
-    @Override
     public List<PaycheckItemDO> modelToEntityList(Paycheck model){
         if(model == null) {
             return null;

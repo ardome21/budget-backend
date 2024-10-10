@@ -32,7 +32,6 @@ public class PaycheckService {
         this.paycheckMapper = paycheckMapper;
     }
 
-    // GET METHODS
     public List<Long> getAllPaycheckIds() {
         return paycheckRepository.findAll()
                 .stream()
@@ -64,7 +63,6 @@ public class PaycheckService {
                 .map(paycheckMapper::entityItemToModelItem);
     }
 
-    // SAVE METHODS
     public Paycheck createPaycheck(Paycheck paycheck) {
         PaycheckDO paycheckDO = paycheckMapper.modelToEntity(paycheck);
         paycheckRepository.save(paycheckDO);
@@ -87,13 +85,12 @@ public class PaycheckService {
         return paycheckMapper.entityItemToModelItem(savedPaycheckItem);
     }
 
-    // UPDATE METHODS
     public Optional<Paycheck> updatePaycheck(
             Long id,
             Paycheck paycheck
     ) {
         if (!paycheckRepository.existsById(id)) {
-            return Optional.empty();
+            throw new EntityNotFoundException("Paycheck with ID " + paycheck + " does not exist");
         }
         List<PaycheckItemDO> paycheckItemDOList = paycheckMapper.modelToEntityList(paycheck);
         List<PaycheckItemDO> savedPaycheckDO = paycheckItemDOList.stream()
@@ -111,15 +108,19 @@ public class PaycheckService {
         if (!paycheckRepository.existsById(paycheckId)) {
             throw new EntityNotFoundException("Paycheck with ID " + paycheckId + " does not exist");
         }
-        if (paycheckItemRepository.existsById(id)) {
-            return Optional.empty();
+        Optional<PaycheckItemDO> curItemDO = paycheckItemRepository.findById(id);
+        if (curItemDO.isEmpty()) {
+            throw new EntityNotFoundException("Paycheck Item with ID " + id + " does not exist");
         }
+        throwIfPaycheckItemBelongsToOtherPaycheck(curItemDO.get(), paycheckId, id);
+
         PaycheckItemDO paycheckItemDO = paycheckMapper.modelItemToEntityItem(paycheckId, category, paycheckItem);
         PaycheckItemDO savedPaycheckItemDO = paycheckItemRepository.save(paycheckItemDO);
         return Optional.of(paycheckMapper.entityItemToModelItem(savedPaycheckItemDO));
     }
 
-    // DELETE METHODS
+
+
     public boolean deletePaycheck(Long id){
         if(paycheckRepository.existsById(id)){
             paycheckRepository.deleteById(id);
@@ -129,14 +130,18 @@ public class PaycheckService {
     }
 
     public boolean deletePaycheckItem(Long id) {
-        if(paycheckItemRepository.existsById(id)){
-            paycheckItemRepository.deleteById(id);
-            return true;
+        Optional<PaycheckItemDO> paycheckItem = paycheckItemRepository.findById(id);
+        if (paycheckItem.isEmpty()) {
+            return false;
         }
-        return false;
+        if (paycheckItem.get().getCategory().equals("gross_pay")) {
+            throw new UnsupportedOperationException("You cannot delete the gross pay of a paycheck. " +
+                    "Update the value, or delete the entire paycheck.");
+        }
+        paycheckItemRepository.deleteById(id);
+        return true;
     }
 
-    // BUSINESS LOGIC METHODS
     private double calculateTakeHome(Paycheck paycheck) {
         double grossPay = paycheck.getGrossPay().getValue();
         double taxes = calculatePaycheckDeduction(paycheck.getTaxes());
@@ -172,6 +177,13 @@ public class PaycheckService {
                             "' already exists for paycheck ID: " + paycheckID + " (Paycheck Item ID: " + id +
                             "). Please update the existing item."
             );
+        }
+    }
+    private void throwIfPaycheckItemBelongsToOtherPaycheck(PaycheckItemDO curItemDO, Long paycheckId, Long id) {
+        Long curPaycheckId = curItemDO.getPaycheckId();
+        if(!paycheckId.equals(curPaycheckId)) {
+            throw new IllegalArgumentException("PaycheckItem with ID " + id + " already belongs to Paycheck of ID "
+                    + curPaycheckId + ". Cannot moved to another Paycheck");
         }
     }
 }

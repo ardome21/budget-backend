@@ -12,8 +12,6 @@ import java.util.List;
 public interface PaycheckMapper {
     Paycheck entityListToModel(List<PaycheckItemDO> entityList);
 
-    Paycheck entityToModel(PaycheckDO entity);
-
     List<PaycheckItemDO> modelToEntityList(Paycheck model);
 
     PaycheckDO modelToEntity(Paycheck model);
