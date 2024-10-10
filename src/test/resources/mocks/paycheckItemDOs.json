@@ -29,28 +29,28 @@
   },
   {
     "id": 5,
-    "paycheckId": 1,
+    "paycheckId": 2,
     "label": "Gross Pay",
     "value": 1000.00,
     "category": "gross_pay"
   },
   {
     "id": 6,
-    "paycheckId": 1,
+    "paycheckId": 2,
     "label": "Federal Taxes",
     "value": 100.00,
     "category": "taxes"
   },
   {
     "id": 7,
-    "paycheckId": 1,
+    "paycheckId": 2,
     "label": "Health Insurance",
     "value": 50.00,
     "category": "benefits"
   },
   {
     "id": 8,
-    "paycheckId": 1,
+    "paycheckId": 2,
     "label": "401k",
     "value": 10.00,
     "category": "retirement"

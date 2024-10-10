@@ -20,4 +20,14 @@ public class DataLoader {
                     objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
         }
     }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            return objectMapper.writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

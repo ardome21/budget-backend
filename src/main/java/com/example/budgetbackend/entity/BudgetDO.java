@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+// FIXME This is more of budgetItem. Need to change db
 @Table(name = "budget")
 public class BudgetDO {
 
