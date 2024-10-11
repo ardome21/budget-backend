@@ -38,6 +38,7 @@ public class ReoccurringTransactionService {
                 .map(reoccurringTransactionMapper::toModel);
     }
 
+    // TODO: Consider scenario of creating reoccurringTransaction and needing to update BudgetItemDO
     public ReoccurringTransaction createReoccurringTransaction(ReoccurringTransaction reoccurringTransaction){
         throwIfReoccurringTransactionExists(reoccurringTransaction);
         ReoccurringTransactionDO reoccurringTransactionDO = reoccurringTransactionMapper
@@ -46,6 +47,7 @@ public class ReoccurringTransactionService {
         return reoccurringTransactionMapper.toModel(savedEntity);
     }
 
+    // TODO: Consider scenario of updating reoccurringTransaction and needing to update BudgetItemDO
     public Optional<ReoccurringTransaction> updateReoccurringTransaction(
             Long id,
             ReoccurringTransaction reoccurringTransaction
@@ -54,6 +56,7 @@ public class ReoccurringTransactionService {
                 .map(reoccurringTransactionDO -> applyUpdates(reoccurringTransactionDO, reoccurringTransaction));
     }
 
+    // TODO: Consider scenario of updating reoccurringTransaction and needing to update BudgetItemDO
     private ReoccurringTransaction applyUpdates(
             ReoccurringTransactionDO reoccurringTransactionDO,
             ReoccurringTransaction reoccurringTransaction
@@ -73,6 +76,7 @@ public class ReoccurringTransactionService {
         return reoccurringTransactionMapper.toModel(updatedEntity);
     }
 
+    // TODO (less important): Consider scenario of deleting reoccurringTransaction and needing to update BudgetItemDO
     public boolean deleteReoccurringTransaction(Long id){
         if(reoccurringTransactionRepository.existsById(id)){
             reoccurringTransactionRepository.deleteById(id);

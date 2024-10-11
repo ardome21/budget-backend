@@ -1,0 +1,155 @@
+[
+  {
+    "id": 1,
+    "takeHome": 4000.00,
+    "categories": [
+      {
+        "id": 1,
+        "category": "savings",
+        "planned": 500.00,
+        "spent": null
+      },
+      {
+        "id": 2,
+        "category": "rent",
+        "planned": 1800.00,
+        "spent": null
+      },
+      {
+        "id": 3,
+        "category": "utilities",
+        "planned": 100.00,
+        "spent": null
+      },
+      {
+        "id": 4,
+        "category": "groceries",
+        "planned": 400.00,
+        "spent": null
+      },
+      {
+        "id": 5,
+        "category": "transportation",
+        "planned": 300.00,
+        "spent": null
+      },
+      {
+        "id": 6,
+        "category": "entertainment",
+        "planned": 400.00,
+        "spent": null
+      },
+      {
+        "id": 7,
+        "category": "miscellaneous",
+        "planned": 500.00,
+        "spent": null
+      }
+
+    ],
+    "totalPlanned": 400.00,
+    "plannedDif": 0,
+    "totalSpent": null,
+    "spendingDif": null
+
+  },
+  {
+    "id": 2,
+    "takeHome": 4000.00,
+    "categories": [
+      {
+        "id": 1,
+        "category": "savings",
+        "planned": 500.00,
+        "spent": null
+      },
+      {
+        "id": 2,
+        "category": "rent",
+        "planned": 1800.00,
+        "spent": null
+      },
+      {
+        "id": 3,
+        "category": "utilities",
+        "planned": 100.00,
+        "spent": null
+      },
+      {
+        "id": 4,
+        "category": "groceries",
+        "planned": 400.00,
+        "spent": null
+      },
+      {
+        "id": 5,
+        "category": "transportation",
+        "planned": 300.00,
+        "spent": null
+      },
+      {
+        "id": 6,
+        "category": "entertainment",
+        "planned": 400.00,
+        "spent": null
+      },
+      {
+        "id": 7,
+        "category": "miscellaneous",
+        "planned": 500.00,
+        "spent": null
+      }
+
+    ],
+    "totalPlanned": 400.00,
+    "plannedDif": 0,
+    "totalSpent": null,
+    "spendingDif": null
+
+  },
+  {
+    "categories": [
+      {
+        "id": 8,
+        "category": "savings",
+        "planned": 100.00,
+        "spent": null
+      },
+      {
+        "id": 9,
+        "category": "rent",
+        "planned": 100.00,
+        "spent": null
+      },
+      {
+        "id": 10,
+        "category": "savings",
+        "planned": 100.00,
+        "spent": null
+      },
+      {
+        "id": 11,
+        "category": "groceries",
+        "planned": 400.00,
+        "spent": null
+      },
+      {
+        "id": 12,
+        "category": "transportation",
+        "planned": 100.00,
+        "spent": null
+      },
+      {
+        "id": 13,
+        "category": "entertainment",
+        "planned": 100.00,
+        "spent": null
+      },
+      {
+        "id": 14,
+        "category": "miscellaneous",
+        "planned": 100.00,
+        "spent": null
+      }]
+  }
+]

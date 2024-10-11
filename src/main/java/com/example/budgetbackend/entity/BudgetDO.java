@@ -9,18 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-// FIXME This is more of budgetItem. Need to change db
-@Table(name = "budget")
+@Table(name = "budgets")
 public class BudgetDO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "category")
-    private String category;
-
-    @Column(name = "amount")
-    private double amount;
-
 }

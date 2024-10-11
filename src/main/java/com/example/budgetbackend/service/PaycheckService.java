@@ -63,6 +63,7 @@ public class PaycheckService {
                 .map(paycheckMapper::entityItemToModelItem);
     }
 
+    // TODO: Consider scenario of saving PaycheckItem and needing to update BudgetItemDO
     public Paycheck createPaycheck(Paycheck paycheck) {
         PaycheckDO paycheckDO = paycheckMapper.modelToEntity(paycheck);
         paycheckRepository.save(paycheckDO);
@@ -74,6 +75,7 @@ public class PaycheckService {
         return paycheckMapper.entityListToModel(savedPaycheckItemDOList);
     }
 
+    // TODO: Consider scenario of saving PaycheckItem and needing to update BudgetItemDO
     public PaycheckItem createPaycheckItem(Long paycheckID, String category, PaycheckItem paycheckItem) {
         if(category.equals("gross_pay")){
             throw new IllegalArgumentException("Cannot create new gross pay. Please update existing gross pay instead.");
@@ -85,6 +87,7 @@ public class PaycheckService {
         return paycheckMapper.entityItemToModelItem(savedPaycheckItem);
     }
 
+    // TODO: Consider scenario of updating PaycheckItem and needing to update BudgetItemDO
     public Optional<Paycheck> updatePaycheck(
             Long id,
             Paycheck paycheck
@@ -99,6 +102,7 @@ public class PaycheckService {
         return Optional.ofNullable(paycheckMapper.entityListToModel(savedPaycheckDO));
     }
 
+    // TODO: Consider scenario of updating PaycheckItem and needing to update BudgetItemDO
     public Optional<PaycheckItem> updatePaycheckItem(
             Long id,
             Long paycheckId,
@@ -119,8 +123,7 @@ public class PaycheckService {
         return Optional.of(paycheckMapper.entityItemToModelItem(savedPaycheckItemDO));
     }
 
-
-
+    // TODO (less important): Consider scenario of deleting PaycheckItem and needing to update BudgetItemDO
     public boolean deletePaycheck(Long id){
         if(paycheckRepository.existsById(id)){
             paycheckRepository.deleteById(id);
@@ -129,6 +132,7 @@ public class PaycheckService {
         return false;
     }
 
+    // TODO (less important): Consider scenario of deleting PaycheckItemDO and needing to update BudgetItemDO
     public boolean deletePaycheckItem(Long id) {
         Optional<PaycheckItemDO> paycheckItem = paycheckItemRepository.findById(id);
         if (paycheckItem.isEmpty()) {

@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "budgetId": 1,
+    "category": "savings",
+    "amount": 500.00
+  },
+  {
+    "id": 2,
+    "budgetId": 1,
+    "category": "rent",
+    "amount": 1800.00
+  },
+  {
+    "id": 3,
+    "budgetId": 1,
+    "category": "utilities",
+    "amount": 100.00
+  },
+  {
+    "id": 4,
+    "budgetId": 1,
+    "category": "groceries",
+    "amount": 400.00
+  },
+  {
+    "id": 5,
+    "budgetId": 1,
+    "category": "transportation",
+    "amount": 300.00
+  },
+  {
+    "id": 6,
+    "budgetId": 1,
+    "category": "entertainment",
+    "amount": 400.00
+  },
+  {
+    "id": 7,
+    "budgetId": 1,
+    "category": "miscellaneous",
+    "amount": 500.00
+  },
+  {
+    "id": 8,
+    "budgetId": 2,
+    "category": "savings",
+    "amount": 500.00
+  },
+  {
+    "id": 9,
+    "budgetId": 2,
+    "category": "rent",
+    "amount": 1800.00
+  },
+  {
+    "id": 10,
+    "budgetId": 2,
+    "category": "utilities",
+    "amount": 100.00
+  },
+  {
+    "id": 11,
+    "budgetId": 2,
+    "category": "groceries",
+    "amount": 400.00
+  },
+  {
+    "id": 12,
+    "budgetId": 2,
+    "category": "transportation",
+    "amount": 300.00
+  },
+  {
+    "id": 12,
+    "budgetId": 2,
+    "category": "entertainment",
+    "amount": 400.00
+  },
+  {
+    "id": 14,
+    "budgetId": 2,
+    "category": "miscellaneous",
+    "amount": 500.00
+  }
+]
