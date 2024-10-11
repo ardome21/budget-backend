@@ -1,5 +1,6 @@
 package com.example.budgetbackend.controller;
 
+import com.example.budgetbackend.BudgetBackendApplication;
 import com.example.budgetbackend.model.Paycheck;
 import com.example.budgetbackend.model.PaycheckItem;
 import com.example.budgetbackend.service.PaycheckService;
@@ -23,8 +24,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest(
+        classes = BudgetBackendApplication.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)@AutoConfigureMockMvc
 public class PaycheckControllerTest {
 
     @Autowired

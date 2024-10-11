@@ -1,5 +1,6 @@
 package com.example.budgetbackend.controller;
 
+import com.example.budgetbackend.BudgetBackendApplication;
 import com.example.budgetbackend.model.Transaction;
 import com.example.budgetbackend.service.TransactionService;
 import com.example.budgetbackend.testUtils.DataLoader;
@@ -22,8 +23,10 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest(
+        classes = BudgetBackendApplication.class,
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)@AutoConfigureMockMvc
 public class TransactionControllerTest {
 
     @Autowired
