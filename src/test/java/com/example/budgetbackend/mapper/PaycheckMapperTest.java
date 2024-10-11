@@ -62,5 +62,6 @@ public class PaycheckMapperTest {
     void testModelToEntity() {
         PaycheckDO result = paycheckMapper.modelToEntity(mockPaycheck);
         assertEquals(result.getId(),mockPaycheck.getId());
+
     }
 }
