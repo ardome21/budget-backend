@@ -1,11 +1,10 @@
-name: CI - Run Spring Boot Tests
+name: CI Workflow
 
 # Run this job on pull requests targeting develop or main branches
 on:
-  pull_request:
+  push:
     branches:
-      - develop
-      - main
+      - '**'
 
 # Define the jobs to be executed
 jobs:
