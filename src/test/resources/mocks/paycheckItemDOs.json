@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "paycheckId": 1,
+    "label": "Gross Pay",
+    "value": 2000.00,
+    "category": "gross_pay"
+  },
+  {
+    "id": 2,
+    "paycheckId": 1,
+    "label": "Federal Taxes",
+    "value": 200.00,
+    "category": "taxes"
+  },
+  {
+    "id": 3,
+    "paycheckId": 1,
+    "label": "Health Insurance",
+    "value": 100.00,
+    "category": "benefits"
+  },
+  {
+    "id": 4,
+    "paycheckId": 1,
+    "label": "401k",
+    "value": 400.00,
+    "category": "gross_pay"
+  },
+  {
+    "id": 5,
+    "paycheckId": 2,
+    "label": "Gross Pay",
+    "value": 1000.00,
+    "category": "gross_pay"
+  },
+  {
+    "id": 6,
+    "paycheckId": 2,
+    "label": "Federal Taxes",
+    "value": 100.00,
+    "category": "taxes"
+  },
+  {
+    "id": 7,
+    "paycheckId": 2,
+    "label": "Health Insurance",
+    "value": 50.00,
+    "category": "benefits"
+  },
+  {
+    "id": 8,
+    "paycheckId": 2,
+    "label": "401k",
+    "value": 10.00,
+    "category": "retirement"
+  }
+]

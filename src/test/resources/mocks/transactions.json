@@ -1,0 +1,29 @@
+[
+  {
+    "id": 5,
+    "date": "2023-06-09",
+    "transactionItem": {
+      "description": "Liquor",
+      "category": "Food and Drink",
+      "amount": 20.22
+    }
+  },
+  {
+    "id": 6,
+    "date": "2023-04-30",
+    "transactionItem": {
+      "description": "pool",
+      "category": "recreation",
+      "amount": 4322.22
+    }
+  },
+  {
+    "id": 8,
+    "date": "2023-07-14",
+    "transactionItem": {
+      "description": "doctors",
+      "category": "Insurance",
+      "amount": 55.0
+    }
+  }
+]

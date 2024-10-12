@@ -1,0 +1,23 @@
+[
+  {
+    "id": 5,
+    "date": "2023-06-09",
+    "description": "Liquor",
+    "category": "Food and Drink",
+    "amount": 20.22
+  },
+  {
+    "id": 6,
+    "date": "2023-04-30",
+    "description": "pool",
+    "category": "recreation",
+    "amount": 4322.22
+  },
+  {
+    "id": 8,
+    "date": "2023-07-14",
+    "description": "doctors",
+    "category": "Insurance",
+    "amount": 55.0
+  }
+]

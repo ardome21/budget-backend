@@ -2,12 +2,15 @@ package com.example.budgetbackend.mapper;
 
 import com.example.budgetbackend.entity.TransactionDO;
 import com.example.budgetbackend.mapper.impl.TransactionMapperImpl;
-import com.example.budgetbackend.mockGenerator.TransactionMockGenerator;
 import com.example.budgetbackend.model.Transaction;
+import com.example.budgetbackend.testUtils.DataLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+
+import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -22,10 +25,12 @@ public class TransactionMapperTest {
     private TransactionDO mockTransactionDO;
 
     @BeforeEach
-    void setUp(){
+    void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
-        mockTransaction = TransactionMockGenerator.generateTransactionList().get(0);
-        mockTransactionDO = TransactionMockGenerator.generateTransactionDOList().get(0);
+        List<Transaction> mockTransactions = DataLoader.loadMockData("mocks/transactions.json", Transaction.class);
+        List<TransactionDO> mockTransactionDOs = DataLoader.loadMockData("mocks/transactionDOs.json", TransactionDO.class);
+        mockTransaction = mockTransactions.get(0);
+        mockTransactionDO = mockTransactionDOs.get(0);
     }
 
     @Test

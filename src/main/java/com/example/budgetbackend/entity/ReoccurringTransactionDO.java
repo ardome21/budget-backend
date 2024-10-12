@@ -30,6 +30,4 @@ public class ReoccurringTransactionDO {
 
     @Column(name = "amount", nullable = false)
     private double amount;
-
-
 }

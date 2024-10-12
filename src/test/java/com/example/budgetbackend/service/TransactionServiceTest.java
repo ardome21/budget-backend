@@ -4,13 +4,14 @@ import com.example.budgetbackend.entity.TransactionDO;
 import com.example.budgetbackend.mapper.TransactionMapper;
 import com.example.budgetbackend.model.Transaction;
 import com.example.budgetbackend.repository.TransactionRepository;
-import com.example.budgetbackend.mockGenerator.TransactionMockGenerator;
+import com.example.budgetbackend.testUtils.DataLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +35,10 @@ public class TransactionServiceTest {
     private List<TransactionDO> mockTransactionDOs;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
-        mockTransactions = TransactionMockGenerator.generateTransactionList();
-        mockTransactionDOs = TransactionMockGenerator.generateTransactionDOList();
+        mockTransactions = DataLoader.loadMockData("mocks/transactions.json", Transaction.class);
+        mockTransactionDOs = DataLoader.loadMockData("mocks/transactionDOs.json", TransactionDO.class);
     }
 
     @Test
@@ -45,6 +46,7 @@ public class TransactionServiceTest {
         when(transactionRepository.findAll()).thenReturn(mockTransactionDOs);
         when(transactionMapper.toModel(mockTransactionDOs.get(0))).thenReturn(mockTransactions.get(0));
         when(transactionMapper.toModel(mockTransactionDOs.get(1))).thenReturn(mockTransactions.get(1));
+        when(transactionMapper.toModel(mockTransactionDOs.get(2))).thenReturn(mockTransactions.get(2));
         List<Transaction> result = transactionService.getAllTransactions();
         assertEquals(mockTransactions, result);
         verify(transactionRepository, times(1)).findAll();

@@ -1,20 +1,20 @@
 package com.example.budgetbackend.controller;
 
-import com.example.budgetbackend.mockGenerator.TransactionMockGenerator;
 import com.example.budgetbackend.model.Transaction;
 import com.example.budgetbackend.service.TransactionService;
+import com.example.budgetbackend.testUtils.DataLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +22,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@SpringBootTest
+@WebMvcTest(TransactionController.class)
+
 @AutoConfigureMockMvc
 public class TransactionControllerTest {
 
@@ -33,11 +34,9 @@ public class TransactionControllerTest {
     private List<Transaction> mockTransactions;
     private Transaction mockTransaction;
 
-
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockTransactions = TransactionMockGenerator.generateTransactionList();
+    void setUp() throws IOException {
+        mockTransactions = DataLoader.loadMockData("mocks/transactions.json", Transaction.class);
         mockTransaction = mockTransactions.get(0);
     }
 

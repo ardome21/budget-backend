@@ -2,12 +2,15 @@ package com.example.budgetbackend.mapper;
 
 import com.example.budgetbackend.entity.ReoccurringTransactionDO;
 import com.example.budgetbackend.mapper.impl.ReoccurringTransactionMapperImpl;
-import com.example.budgetbackend.mockGenerator.ReoccurringTransactionMockGenerator;
 import com.example.budgetbackend.model.ReoccurringTransaction;
+import com.example.budgetbackend.testUtils.DataLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+
+import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -21,10 +24,12 @@ public class ReoccurringTransactionMapperTest {
     private ReoccurringTransactionDO mockReoccurringTransactionDO;
 
     @BeforeEach
-    void setUp(){
+    void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
-        mockReoccurringTransaction = ReoccurringTransactionMockGenerator.generateReoccuringTransactionList().get(0);
-        mockReoccurringTransactionDO = ReoccurringTransactionMockGenerator.generateReoccuringTransactionDOList().get(0);
+        List<ReoccurringTransaction> mockReoccurringTransactions = DataLoader.loadMockData("mocks/reoccurringTransactions.json", ReoccurringTransaction.class);
+        mockReoccurringTransaction = mockReoccurringTransactions.get(0);
+        List<ReoccurringTransactionDO> mockReoccurringTransactionDOs = DataLoader.loadMockData("mocks/reoccurringTransactionDOs.json", ReoccurringTransactionDO.class);
+        mockReoccurringTransactionDO = mockReoccurringTransactionDOs.get(0);
     }
 
     @Test

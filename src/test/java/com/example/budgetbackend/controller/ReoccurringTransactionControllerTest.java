@@ -1,8 +1,8 @@
 package com.example.budgetbackend.controller;
 
-import com.example.budgetbackend.mockGenerator.ReoccurringTransactionMockGenerator;
 import com.example.budgetbackend.model.ReoccurringTransaction;
 import com.example.budgetbackend.service.ReoccurringTransactionService;
+import com.example.budgetbackend.testUtils.DataLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,11 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@SpringBootTest
+@WebMvcTest(ReoccurringTransactionController.class)
 @AutoConfigureMockMvc
 public class ReoccurringTransactionControllerTest {
 
@@ -37,9 +38,9 @@ public class ReoccurringTransactionControllerTest {
     private ReoccurringTransaction mockReoccurringTransaction;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
-        mockReoccurringTransactions = ReoccurringTransactionMockGenerator.generateReoccuringTransactionList();
+        mockReoccurringTransactions = DataLoader.loadMockData("mocks/reoccurringTransactions.json", ReoccurringTransaction.class);
         mockReoccurringTransaction = mockReoccurringTransactions.get(0);
     }
 
@@ -74,14 +75,14 @@ public class ReoccurringTransactionControllerTest {
 
     @Test
     void testCreateReoccurringTransaction_shouldReturnReoccurringTransaction() throws Exception {
-        when(reoccurringTransactionService.saveReoccurringTransaction(any(ReoccurringTransaction.class))).thenReturn(mockReoccurringTransaction);
+        when(reoccurringTransactionService.createReoccurringTransaction(any(ReoccurringTransaction.class))).thenReturn(mockReoccurringTransaction);
         String inputJsonString = asJsonString(mockReoccurringTransaction);
         mockMvc.perform(post("/reoccurring")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(inputJsonString))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(mockReoccurringTransaction.getId()));
-        verify(reoccurringTransactionService, times(1)).saveReoccurringTransaction(any(ReoccurringTransaction.class));
+        verify(reoccurringTransactionService, times(1)).createReoccurringTransaction(any(ReoccurringTransaction.class));
     }
 
     @Test

@@ -48,7 +48,8 @@ public class PaycheckMapperImpl implements PaycheckMapper {
         return paycheck;
     }
 
-    private PaycheckItem entityItemToModelItem(PaycheckItemDO entity) {
+    @Override
+    public PaycheckItem entityItemToModelItem(PaycheckItemDO entity) {
         PaycheckItem paycheckItem = new PaycheckItem();
         paycheckItem.setId(entity.getId());
         paycheckItem.setLabel(entity.getLabel());
@@ -62,7 +63,8 @@ public class PaycheckMapperImpl implements PaycheckMapper {
                 .collect(Collectors.toList());
     }
 
-    private PaycheckItemDO modelItemToEntityItem(Long paycheckID, String category, PaycheckItem model) {
+    @Override
+    public PaycheckItemDO modelItemToEntityItem(Long paycheckID, String category, PaycheckItem model) {
         PaycheckItemDO paycheckItemDO = new PaycheckItemDO();
         paycheckItemDO.setId(model.getId());
         paycheckItemDO.setPaycheckId(paycheckID);
@@ -70,16 +72,6 @@ public class PaycheckMapperImpl implements PaycheckMapper {
         paycheckItemDO.setValue(model.getValue());
         paycheckItemDO.setCategory(category);
         return paycheckItemDO;
-    }
-
-    @Override
-    public Paycheck entityToModel(PaycheckDO entity) {
-        if(entity == null){
-            return null;
-        }
-        Paycheck paycheck = new Paycheck();
-        paycheck.setId(entity.getId());
-        return paycheck;
     }
 
     @Override
@@ -105,8 +97,6 @@ public class PaycheckMapperImpl implements PaycheckMapper {
 
         return completeListOfDOs;
     }
-
-
 
     public PaycheckDO modelToEntity(Paycheck model) {
         if(model == null){
