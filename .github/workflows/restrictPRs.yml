@@ -1,0 +1,17 @@
+name: Restrict PRs to Main
+
+on:
+  pull_request:
+    branches:
+      - main  # Trigger on PRs targeting the main branch
+
+jobs:
+  restrict-prs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if PR is from develop
+        if: github.event.pull_request.head.ref != 'develop'
+        run: |
+          echo "Error: Only PRs from the 'develop' branch are allowed to be merged into 'main'."
+          exit 1
