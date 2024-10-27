@@ -19,6 +19,8 @@ public interface BudgetMapper {
 
     BudgetDO modelToEntity(Budget model);
 
+    Budget entityToModel(BudgetDO entity);
+
     BudgetItem entityItemToModelItem(BudgetItemDO model, double spent);
 
     BudgetItemDO modelItemToEntityItem(Long budgetId, BudgetItem entity);

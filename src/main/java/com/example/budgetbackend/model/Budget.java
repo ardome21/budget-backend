@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.YearMonth;
 import java.util.List;
 
 @NoArgsConstructor
@@ -11,6 +12,7 @@ import java.util.List;
 @Setter
 public class Budget {
     Long id;
+    YearMonth month;
     double takeHome;
     List<BudgetItem> categories;
     double totalPlanned;

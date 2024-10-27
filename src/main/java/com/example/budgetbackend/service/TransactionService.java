@@ -3,10 +3,12 @@ package com.example.budgetbackend.service;
 import com.example.budgetbackend.entity.TransactionDO;
 import com.example.budgetbackend.mapper.TransactionMapper;
 import com.example.budgetbackend.model.Transaction;
+import com.example.budgetbackend.model.TransactionItem;
 import com.example.budgetbackend.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,5 +60,16 @@ public class TransactionService {
         } else {
             return false;
         }
+    }
+
+    public List<TransactionItem> getTransactionsByMonthAndCategory(YearMonth month, String category) {
+        return transactionRepository.findAllByYearMonthAndCategory(
+                        month.getYear(),
+                        month.getMonth().getValue(),
+                        category)
+                .stream()
+                .map(transactionMapper::toModel)
+                .map(Transaction::getTransactionItem)
+                .toList();
     }
 }

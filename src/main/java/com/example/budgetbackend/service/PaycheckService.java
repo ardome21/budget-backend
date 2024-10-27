@@ -36,7 +36,7 @@ public class PaycheckService {
         return paycheckRepository.findAll()
                 .stream()
                 .map(PaycheckDO::getId)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<PaycheckItemDO> getPaycheckItemsByPaycheckId(Long paycheckId){
@@ -189,5 +189,14 @@ public class PaycheckService {
             throw new IllegalArgumentException("PaycheckItem with ID " + id + " already belongs to Paycheck of ID "
                     + curPaycheckId + ". Cannot moved to another Paycheck");
         }
+    }
+
+    // CODE_DEBT: User isn't a concept in this app yet, but this function will rely on the user functionality
+    // Current return takeHome from all paychecks (since there is only one user),
+    // but once multiple users are supported, paycheck and budget will have users and this function need to be reworked
+    public double getUserTakeHome() {
+        return getAllPaychecks().stream()
+                .mapToDouble(Paycheck::getTakeHome)
+                .sum();
     }
 }

@@ -7,6 +7,9 @@ import com.example.budgetbackend.model.Budget;
 import com.example.budgetbackend.model.BudgetItem;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.List;
 
 @Component
@@ -42,6 +45,18 @@ public class BudgetMapperImpl implements BudgetMapper {
         BudgetDO budgetDO = new BudgetDO();
         budgetDO.setId(model.getId());
         return budgetDO;
+    }
+
+    @Override
+    public Budget entityToModel(BudgetDO entity){
+        if (entity == null){
+            return null;
+        }
+        Budget budget = new Budget();
+        budget.setId(entity.getId());
+        YearMonth month = YearMonth.from(entity.getYearMonth());
+        budget.setMonth(month);
+        return budget;
     }
 
     @Override
